@@ -1022,7 +1022,6 @@ const personalities = {
     }
 };
 
-// ============ 以下代码粘贴到你现有 script.js 文件最末尾，不改动原有任何业务代码 ============
 const PRICE_FEE = "9.90";
 const GOODS_TITLE = "乒乓MBTI完整深度报告解锁";
 
