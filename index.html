@@ -1,195 +1,162 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>乒乓球人的MBTI测试 | 测测你是乒乓球馆里哪种人</title>
-    <meta name="description" content="30道真实球场情景题，测出你的专属乒乓球人格，看看你是爆冲王还是摆烂人">
-    <meta property="og:title" content="测测你是乒乓球馆里哪种人？准到离谱！">
-    <meta property="og:description" content="乒乓球人的MBTI测试，球友都说准！">
-    <meta property="og:image" content="https://picsum.photos/600/300">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 替换为国内稳定CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>乒乓人的专属MBTI测试</title>
+  <meta name="description" content="30道球场情景选择题，5分钟测出你的专属打球人格">
+  <!-- 替换为国内完整CSS CDN，不再用JS版，不会出现tailwind未定义 -->
+  <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-10-M/tailwindcss/3.3.2/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-M/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-10-M/qrcodejs/1.5.3/qrcode.min.js"></script>
+  <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-M/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root{
+      --color-main: #FF5722;
+      --color-dark: #222222;
+      --color-light: #fef7f2;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    .btn-start {
+      background-color: var(--color-main);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 9999px;
+      font-size: 1.125rem;
+      font-weight: bold;
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+    .btn-start:hover {
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    }
+    .btn-start:active {
+      transform: scale(0.95);
+    }
+    .card-box {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      padding: 1.5rem 2rem;
+    }
+    .result-scroll {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .pay-mask {
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(2px);
+    }
+    #share-wrap {
+      padding:20px;
+      background:#fff;
+    }
+    .text-main {
+      color: var(--color-main);
+    }
+    .bg-main {
+      background-color: var(--color-main);
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
-    <nav class="bg-white shadow-md py-4 px-6 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold text-orange-600">🏓 球馆人格测试</h1>
-        </div>
-    </nav>
+<body class="bg-light min-h-screen font-sans text-dark">
+  <!-- 首页封面区域 -->
+  <div id="home-page" class="min-h-screen flex flex-col justify-center items-center px-4 py-10 text-center">
+    <div class="w-full max-w-xl rounded-2xl overflow-hidden shadow-xl mb-8">
+      <img id="cover-img" src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98r/pingpong-cartoon.jpg~tplv-a9rns2rl98r-image.image" alt="乒乓小将切磋漫画" class="w-full h-auto">
+    </div>
 
-    <main class="max-w-4xl mx-auto px-4 py-8">
-        <div id="home" class="text-center mb-12">
-            <h2 class="text-4xl font-bold mb-6 text-gray-800">你是球馆里的哪种人？</h2>
-            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                30道真实球场情景题，科学分析你的打球风格<br>
-                准到让球友直呼"你在我身上装了摄像头"
-            </p>
-            <div class="mb-8 text-sm text-gray-500">
-                <i class="fas fa-users mr-2"></i> 已有 <span class="font-bold text-orange-600">21,369</span> 人完成测试
-            </div>
-            <button id="start-btn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg transition transform hover:scale-105">
-                开始测试
+    <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold mb-4">乒乓人的专属MBTI测试</h1>
+    <p class="text-gray-600 text-base md:text-lg mb-3">30道题，5分钟情景选择题，快速判断你的专属打球人格</p>
+    <p class="text-gray-500 mb-10">
+      <i class="fa-solid fa-users mr-1"></i>已有 <span id="test-num">21945</span> 人测试
+    </p>
+
+    <button id="btn-start-test" class="btn-start">
+      <i class="fa-solid fa-play-circle mr-2"></i>开始测试
+    </button>
+
+    <div class="mt-auto pt-12 text-sm text-gray-400">
+      结果仅供娱乐参考
+    </div>
+  </div>
+
+  <!-- 答题页面 -->
+  <div id="question-page" class="hidden max-w-2xl mx-auto px-4 py-10">
+    <div class="card-box">
+      <div class="flex justify-between items-center mb-4">
+        <span id="module-name" class="text-main font-semibold"></span>
+        <span id="progress-text" class="text-sm text-gray-500"></span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+        <div id="progress-bar" class="bg-main h-2 rounded-full transition-all"></div>
+      </div>
+
+      <h3 id="question-title" class="text-xl font-bold mb-6"></h3>
+      <div id="option-list" class="space-y-3 mb-8"></div>
+
+      <div class="flex justify-between">
+        <button id="prev-q" class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 disabled:opacity-40" disabled>
+          <i class="fa-solid fa-chevron-left mr-1"></i>上一题
+        </button>
+        <button id="next-q" class="px-5 py-2 bg-main text-white rounded-lg hover:opacity-90 disabled:opacity-40">
+          下一题<i class="fa-solid fa-chevron-right ml-1"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结果弹窗 -->
+  <div id="result-modal" class="hidden fixed inset-0 z-[999] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden relative">
+      <button id="close-result" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl z-10">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="p-6 md:p-8 result-scroll" id="result-container">
+        <div id="share-wrap">
+          <h2 class="text-2xl font-bold text-center mb-4">你的乒乓人格测试结果</h2>
+          <div id="free-brief-desc" class="mb-6 border-b pb-6"></div>
+
+          <div id="pay-overlay" class="pay-mask absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
+            <h3 class="text-xl font-bold mb-3">解锁完整1000字深度报告</h3>
+            <p class="mb-6 opacity-90">专属训练方案+实战套路+器材推荐完整解析</p>
+            <button id="pay-btn-unlock" class="bg-main px-8 py-3 rounded-full font-bold text-lg">
+              仅需 9.9 元立即解锁
             </button>
-            <p class="text-sm text-gray-500 mt-4">测试时长约5分钟 | 结果仅供娱乐参考</p>
+          </div>
+
+          <div id="full-long-report" class="hidden mt-6 whitespace-pre-line"></div>
+
+          <div class="mt-8 pt-6 border-t">
+            <p class="text-center text-gray-600 mb-3">分享朋友圈，好友扫码立即测试</p>
+            <div id="qrcode-box" class="flex justify-center"></div>
+            <div class="flex justify-center gap-4 mt-4 flex-wrap">
+              <button id="save-share-img" class="px-4 py-2 border border-main text-main rounded-lg">
+                <i class="fa-solid fa-download mr-1"></i>保存分享图
+              </button>
+              <button id="restart-test" class="px-4 py-2 bg-main text-white rounded-lg">
+                <i class="fa-solid fa-redo mr-1"></i>重新测试
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div id="quiz" class="hidden">
-            <div class="mb-8">
-                <div class="flex justify-between mb-2">
-                    <span id="module-name">第一模块：器材与习惯</span>
-                    <span id="progress-percent">0%</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-                </div>
-            </div>
+  <!-- 支付成功弹窗 -->
+  <div id="pay-success-modal" class="hidden fixed inset-0 bg-black/50 z-[1000] flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-8 text-center max-w-sm w-full">
+      <div class="text-5xl text-green-500 mb-4"><i class="fa-solid fa-check-circle"></i></div>
+      <h3 class="text-xl font-bold mb-2">支付成功</h3>
+      <p class="text-gray-600 mb-6">完整深度报告已解锁，向下滑动查看全部内容</p>
+      <button id="close-pay-success" class="px-6 py-2 bg-main text-white rounded-lg">确定查看报告</button>
+    </div>
+  </div>
 
-            <div id="question-container" class="bg-white rounded-xl shadow-lg p-8 mb-6">
-                <h3 id="question-text" class="text-2xl font-semibold mb-6 text-gray-800"></h3>
-                <div id="options-container" class="space-y-4"></div>
-            </div>
-
-            <div class="flex justify-between">
-                <button id="prev-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg transition disabled:opacity-50" disabled>
-                    <i class="fas fa-arrow-left mr-2"></i> 上一题
-                </button>
-                <button id="next-btn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition disabled:opacity-50" disabled>
-                    下一题 <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </div>
-        </div>
-
-        <div id="free-result" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-                <div id="personality-avatar" class="w-32 h-32 mx-auto mb-4 rounded-full bg-orange-100 flex items-center justify-center text-5xl">
-                    🏓
-                </div>
-                
-                <h2 class="text-3xl font-bold mb-2 text-center text-orange-600" id="personality-type"></h2>
-                <p class="text-xl text-gray-600 text-center mb-4" id="personality-tagline"></p>
-                <p class="text-sm text-gray-500 text-center mb-8" id="accuracy-text"></p>
-                
-                <div class="grid md:grid-cols-2 gap-8 mb-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4 text-gray-800">🎯 核心特点</h3>
-                        <p id="core-traits" class="text-gray-600"></p>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-4 text-gray-800">🏓 打球风格</h3>
-                        <p id="play-style" class="text-gray-600"></p>
-                    </div>
-                </div>
-
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-800">⚡ 招牌绝技</h3>
-                    <p id="signature-move" class="text-gray-600"></p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-green-50 p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-3 text-green-700">✅ 你的优势</h3>
-                        <p id="strengths" class="text-gray-600"></p>
-                    </div>
-                    <div class="bg-red-50 p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-3 text-red-700">❌ 你的死穴</h3>
-                        <p id="weaknesses" class="text-gray-600"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 付费引导（加入反直觉钩子） -->
-            <div class="bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl shadow-lg p-8 text-white text-center">
-                <div class="mb-4">
-                    <span class="bg-white text-orange-600 px-3 py-1 rounded-full text-sm font-bold">🔥 限时特惠</span>
-                    <span class="ml-2 text-sm opacity-90">仅剩 2 天恢复原价 29.9 元</span>
-                </div>
-                
-                <h3 class="text-2xl font-bold mb-4">解锁完整深度报告</h3>
-                
-                <div class="text-left mb-6 max-w-md mx-auto bg-white/10 p-4 rounded-lg">
-                    <h4 class="font-bold mb-3">📋 完整报告包含：</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li>✓ <strong>反直觉结论</strong>：你以为的短板其实是你最大的优势</li>
-                        <li>✓ 一针见血指出你最致命的3个技术问题</li>
-                        <li>✓ 3套拿来就能用的实战套路（详细到每一拍）</li>
-                        <li>✓ 3个月分阶段训练计划（每周3次，每次1.5小时）</li>
-                        <li>✓ 谁是你的天生克星，怎么打他最有效</li>
-                        <li>✓ 最适合你的器材配置（不花一分冤枉钱）</li>
-                    </ul>
-                </div>
-
-                <div class="mb-6">
-                    <p class="text-sm line-through opacity-70 mb-1">原价：29.9元</p>
-                    <p class="text-xl font-bold">限时仅需 <span class="text-4xl">9.9</span> 元</p>
-                    <p class="text-xs opacity-90 mt-1">一瓶矿泉水钱，少走半年弯路</p>
-                </div>
-
-                <button id="pay-btn" class="bg-white text-orange-600 font-bold py-4 px-12 rounded-full text-lg shadow-lg transition transform hover:scale-105">
-                    立即解锁完整报告
-                </button>
-
-                <div class="mt-6 text-xs opacity-90 flex justify-center items-center space-x-4">
-                    <span><i class="fas fa-shield-alt mr-1"></i> 安全支付</span>
-                    <span><i class="fas fa-undo mr-1"></i> 不满意24小时退款</span>
-                    <span><i class="fas fa-check-circle mr-1"></i> 已有 5,621 人购买</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="payment" class="hidden text-center">
-            <div class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto">
-                <div id="payment-loading">
-                    <i class="fas fa-spinner fa-spin text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-2xl font-bold mb-2 text-gray-800">正在生成支付链接</h3>
-                    <p class="text-gray-600">请稍候...</p>
-                </div>
-
-                <div id="payment-ready" class="hidden">
-                    <h3 class="text-2xl font-bold mb-6 text-gray-800">确认支付</h3>
-                    <p class="text-gray-600 mb-4">乒乓球人格测试完整报告</p>
-                    <p class="text-3xl font-bold mb-6 text-orange-600">¥9.90</p>
-                    
-                    <button id="wechat-pay-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg transition mb-4">
-                        <i class="fab fa-weixin mr-2"></i> 微信支付
-                    </button>
-                    
-                    <p class="text-sm text-gray-500">支付成功后将自动跳转到完整报告</p>
-                    <button id="back-to-result-btn" class="mt-4 text-gray-500 hover:text-gray-700 transition">
-                        ← 返回免费结果
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="full-report" class="hidden">
-            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-                <div id="full-personality-avatar" class="w-32 h-32 mx-auto mb-4 rounded-full bg-orange-100 flex items-center justify-center text-5xl">
-                    🏓
-                </div>
-                
-                <h2 class="text-3xl font-bold mb-2 text-center text-orange-600" id="full-personality-type"></h2>
-                <p class="text-lg text-gray-600 text-center mb-4" id="full-personality-tagline"></p>
-                <p class="text-sm text-gray-500 text-center mb-8" id="full-accuracy-text"></p>
-                
-                <div id="report-content"></div>
-                
-                <div class="mt-12 text-center border-t pt-8">
-                    <p class="text-gray-600 mb-4">本报告由@球馆人格测试 独家出品</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-white shadow-inner py-6 px-4 mt-12">
-        <div class="max-w-4xl mx-auto text-center text-gray-500 text-sm">
-            <p>© 2026 球馆人格测试 版权所有 | 测试仅供娱乐参考</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+  <!-- 外部引入业务逻辑，所有题目、人格、计分全部放在单独script.js里 -->
+  <script src="./script.js"></script>
 </body>
 </html>
