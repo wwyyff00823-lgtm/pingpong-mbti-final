@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>乒乓人的专属MBTI测试</title>
   <meta name="description" content="30道球场情景选择题，5分钟测出你的专属打球人格">
+<<<<<<< HEAD
   <!-- 替换为国内完整CSS CDN，不再用JS版，不会出现tailwind未定义 -->
   <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-10-M/tailwindcss/3.3.2/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-M/font-awesome/6.4.0/css/all.min.css">
@@ -16,10 +17,32 @@
       --color-dark: #222222;
       --color-light: #fef7f2;
     }
+=======
+  <!-- 国内字节CDN，无VPN直连 -->
+  <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-10-M/tailwindcss/3.3.2/tailwind.min.js"></script>
+  <link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-M/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-10-M/qrcodejs/1.5.3/qrcode.min.js"></script>
+  <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-10-M/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            main: '#FF5722',
+            dark: '#222222',
+            light: '#fef7f2'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+>>>>>>> 7a410dcf48432fcfa4e615bc49d24490453a13f9
     html {
       scroll-behavior: smooth;
     }
     .btn-start {
+<<<<<<< HEAD
       background-color: var(--color-main);
       color: white;
       padding: 1rem 2.5rem;
@@ -39,6 +62,12 @@
       border-radius: 0.75rem;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
       padding: 1.5rem 2rem;
+=======
+      @apply bg-main text-white px-10 py-4 rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95;
+    }
+    .card-box {
+      @apply bg-white rounded-xl shadow-lg p-6 md:p-8;
+>>>>>>> 7a410dcf48432fcfa4e615bc49d24490453a13f9
     }
     .result-scroll {
       max-height: 70vh;
@@ -52,12 +81,15 @@
       padding:20px;
       background:#fff;
     }
+<<<<<<< HEAD
     .text-main {
       color: var(--color-main);
     }
     .bg-main {
       background-color: var(--color-main);
     }
+=======
+>>>>>>> 7a410dcf48432fcfa4e615bc49d24490453a13f9
   </style>
 </head>
 <body class="bg-light min-h-screen font-sans text-dark">

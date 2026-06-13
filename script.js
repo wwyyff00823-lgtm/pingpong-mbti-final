@@ -1022,6 +1022,12 @@ const personalities = {
     }
 };
 
+<<<<<<< HEAD
+=======
+// ============ 以下代码粘贴到你现有 script.js 文件最末尾，不改动原有任何业务代码 ============
+const HUPIJIAO_MCH_ID = "201906181673";
+const HUPIJIAO_KEY = "685ed8bb1d5468e8771aaee1109913c4";
+>>>>>>> 7a410dcf48432fcfa4e615bc49d24490453a13f9
 const PRICE_FEE = "9.90";
 const GOODS_TITLE = "乒乓MBTI完整深度报告解锁";
 
