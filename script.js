@@ -1022,4 +1022,103 @@ const personalities = {
     }
 };
 
-// 计分、人格判定、渲染工具函数（你原有逻辑自行追加在此处即可）    
+// ============ 以下代码粘贴到你现有 script.js 文件最末尾，不改动原有任何业务代码 ============
+const HUPIJIAO_MCH_ID = "201906181673";
+const HUPIJIAO_KEY = "685ed8bb1d5468e8771aaee1109913c4";
+const PRICE_FEE = "9.90";
+const GOODS_TITLE = "乒乓MBTI完整深度报告解锁";
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// 生成分享二维码
+function createQRCode() {
+  $("#qrcode-box").innerHTML = "";
+  new QRCode($("#qrcode-box"), {
+    text: window.location.href,
+    width: 120,
+    height: 120
+  });
+}
+
+// 一键保存分享截图
+$("#save-share-img").addEventListener("click", async () => {
+  try {
+    const canvas = await html2canvas($("#share-wrap"), {scale:2});
+    const link = document.createElement('a');
+    link.download = "乒乓MBTI测试结果.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }catch(e){
+    alert("保存失败，可长按页面截图手动保存");
+  }
+});
+
+// 开始测试按钮跳转页面
+$("#btn-start-test").addEventListener("click", () => {
+  $("#home-page").classList.add("hidden");
+  $("#question-page").classList.remove("hidden");
+  // 调用你原有启动测试初始化函数（你原来的startTest()）
+  startTest();
+});
+
+// 关闭结果弹窗
+$("#close-result").addEventListener("click", () => {
+  $("#result-modal").classList.add("hidden");
+});
+
+// 重新测试，返回首页
+$("#restart-test").addEventListener("click", () => {
+  $("#result-modal").classList.add("hidden");
+  $("#question-page").classList.add("hidden");
+  $("#home-page").classList.remove("hidden");
+  // 调用你原有重置答题进度的函数
+  resetTest();
+});
+
+// 虎皮椒支付跳转逻辑
+$("#pay-btn-unlock").addEventListener("click", async function(){
+  const orderNo = "PINGPONG_" + Date.now();
+  const params = new URLSearchParams();
+  params.append("mchid", HUPIJIAO_MCH_ID);
+  params.append("out_trade_no", orderNo);
+  params.append("total_fee", PRICE_FEE);
+  params.append("body", GOODS_TITLE);
+  params.append("notify_url", window.location.origin + "/pay-notify");
+
+  const signStr = `mchid=${HUPIJIAO_MCH_ID}&out_trade_no=${orderNo}&total_fee=${PRICE_FEE}&key=${HUPIJIAO_KEY}`;
+  async function md5(str){
+    const buf = new TextEncoder().encode(str);
+    const digest = await crypto.subtle.digest("MD5", buf);
+    return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+  const sign = await md5(signStr);
+  params.append("sign", sign);
+  params.append("sign_type", "MD5");
+
+  window.location.href = `https://pay.hupijiao.com/pay/create?${params.toString()}`;
+});
+
+// 支付成功解锁完整报告
+function paySuccessCallback() {
+  $("#pay-overlay").classList.add("hidden");
+  $("#full-long-report").classList.remove("hidden");
+  $("#pay-success-modal").classList.remove("hidden");
+}
+$("#close-pay-success").addEventListener("click", () => {
+  $("#pay-success-modal").classList.add("hidden");
+});
+
+/**
+ * 对外暴露渲染结果统一接口
+ * 你原有答题计算出人格后，调用：
+ * showResultModal(简短免费介绍文本, 1000字完整付费报告文本)
+ */
+function showResultModal(briefText, fullReportText){
+  $("#free-brief-desc").innerHTML = briefText;
+  $("#full-long-report").innerText = fullReportText;
+  $("#pay-overlay").classList.remove("hidden");
+  $("#full-long-report").classList.add("hidden");
+  $("#result-modal").classList.remove("hidden");
+  createQRCode();
+}    
