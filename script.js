@@ -1054,10 +1054,8 @@ $("#save-share-img").addEventListener("click", async () => {
 $("#btn-start-test").addEventListener("click", () => {
   $("#home-page").classList.add("hidden");
   $("#question-page").classList.remove("hidden");
-  // 调用你原有启动测试初始化函数（你原来的startTest()）
-  startTest();
+  // startTest();
 });
-
 // 关闭结果弹窗
 $("#close-result").addEventListener("click", () => {
   $("#result-modal").classList.add("hidden");
